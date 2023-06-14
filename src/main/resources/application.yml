@@ -1,0 +1,52 @@
+#单个数据库配置---------------------------------------------------------
+#spring:
+#  # 配置数据源信息
+#  datasource:
+#    # 配置数据源类型
+#    type: com.zaxxer.hikari.HikariDataSource
+#    driver-class-name: com.mysql.cj.jdbc.Driver
+#    url: jdbc:mysql://localhost:3306/jc_shop?characterEncoding=utf-8&userSSL=false
+#    username: root
+#    password: root
+#-------------------多数据源配置---------------------------------------------------------
+spring:
+  #Spring Boot 2.6.X使用PathPatternMatcher匹配路径，Swagger引用的Springfox使用的路径匹配是基于AntPathMatcher的。
+  mvc:
+    pathmatch:
+      matching-strategy: ANT_PATH_MATCHER
+  # 配置数据源信息
+  datasource:
+    dynamic:
+       # 设置默认的数据源或者数据源组,默认值即为master
+      primary: master
+      # 严格匹配数据源,默认false.true未匹配到指定数据源时抛异常,false使用默认数据源
+      strict: false
+      datasource:
+        master:
+          url: jdbc:mysql://localhost:3306/jc_shop?characterEncoding=utf-8&userSSL=false
+          driver-class-name: com.mysql.cj.jdbc.Driver
+          username: root
+          password: root
+        slave_1:
+          url: jdbc:mysql://localhost:3306/jc_test?characterEncoding=utf-8&userSSL=false
+          driver-class-name: com.mysql.cj.jdbc.Driver
+          username: root
+          password: root
+    #mybatis.configuration.map-underscore-to-camel-case=true
+mybatis-plus:
+  configuration:
+    #主要是下面的配置 ，能够将sql打印在控制台上
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+    #开启驼峰命名转换 查询的数据库值返回给实体类
+    map-underscore-to-camel-case: true
+  # 配置扫描通用枚举
+  type-enums-package: com.jc.mybatisplus.enums
+#  global-config:
+#    db-config:
+#      # 配置MyBatis-Plus操作表的默认前缀
+#      table-prefix: t_
+#      # 配置MyBatis-Plus的主键策略
+#      id-type: auto
+
+
+
